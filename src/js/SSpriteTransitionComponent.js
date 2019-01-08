@@ -1,6 +1,6 @@
 import SWebComponent from "coffeekraken-sugar/js/core/SWebComponent"
-import STimer from 'coffeekraken-sugar/js/classes/STimer'
-import debounce from 'coffeekraken-sugar/js/utils/functions/debounce'
+import STimer from "coffeekraken-sugar/js/classes/STimer"
+import debounce from "coffeekraken-sugar/js/utils/functions/debounce"
 
 export default class Component extends SWebComponent {
   /**
@@ -10,7 +10,6 @@ export default class Component extends SWebComponent {
    */
   static get defaultProps() {
     return {
-
       /**
        * The source of the sprite to use as transition
        * @prop
@@ -59,7 +58,6 @@ export default class Component extends SWebComponent {
        * @type    {String}
        */
       color: null
-
     }
   }
 
@@ -78,7 +76,7 @@ export default class Component extends SWebComponent {
    * @protected
    */
   static get requiredProps() {
-    return ['src', 'spriteWidth']
+    return ["src", "spriteWidth"]
   }
 
   /**
@@ -120,12 +118,13 @@ export default class Component extends SWebComponent {
     super.componentMount()
 
     // create a canvas to draw in
-    this._$canvas = document.createElement('canvas')
+    this._$canvas = document.createElement("canvas")
+    this._ctx = this._$canvas.getContext("2d")
     this.appendChild(this._$canvas)
     this._setCanvasSize()
 
     // set the phase we're in
-    this._phase = 'in' // out
+    this._phase = "in" // out
 
     // load the sprite as an image
     this._$spriteImg = await this._loadSprite()
@@ -136,12 +135,11 @@ export default class Component extends SWebComponent {
 
     // init a timer to drive the animation
     this._timer = new STimer(this.props.duration, {
-      tickCount: (this.props.stillFrame || this._totalFrames)
+      tickCount: this.props.stillFrame || this._totalFrames
     })
     this._timer.onTick(() => {
-
       if (this.props.yoyo) {
-        if (this._phase === 'in') this._currentFrame += 1
+        if (this._phase === "in") this._currentFrame += 1
         else this._currentFrame -= 1
       } else {
         this._currentFrame += 1
@@ -150,20 +148,19 @@ export default class Component extends SWebComponent {
       this._drawFrame(this._currentFrame)
     })
     this._timer.onComplete(() => {
-
-      if (this._phase === 'out') {
-        this.classList.remove('active')
+      if (this._phase === "out") {
+        this.classList.remove("active")
       }
 
       this._endedPromiseResolve(this)
     })
 
     // listen for resize through transitionend event
-    this._resizeHandlerFn = this._resizeHandler.bind(this)
-    window.addEventListener('resize', this._resizeHandlerFn)
+    this._resizeHandlerFn = debounce(this._resizeHandler.bind(this), 100)
+    window.addEventListener("resize", this._resizeHandlerFn)
 
     // dispatch the ready event
-    this.dispatchComponentEvent('ready')
+    this.dispatchComponentEvent("ready")
   }
 
   /**
@@ -173,6 +170,10 @@ export default class Component extends SWebComponent {
    */
   componentUnmount() {
     super.componentUnmount()
+    this._timer.stop()
+    this._timer.destroy()
+    this._$spriteImg = null
+    window.removeEventListener("resize", this._resizeHandlerFn)
   }
 
   /**
@@ -187,7 +188,7 @@ export default class Component extends SWebComponent {
   /**
    * Resize handler
    */
-  _resizeHandler(e) {
+  _resizeHandler() {
     this._setCanvasSize()
   }
 
@@ -195,7 +196,7 @@ export default class Component extends SWebComponent {
    * Load the sprite into an image
    */
   async _loadSprite() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const img = new Image()
       img.onload = () => {
         resolve(img)
@@ -208,7 +209,7 @@ export default class Component extends SWebComponent {
    * Set the canvas size
    */
   _setCanvasSize() {
-    const [w,h] = [this.offsetWidth, this.offsetHeight]
+    const [w, h] = [this.offsetWidth, this.offsetHeight]
     this._$canvas.width = w
     this._$canvas.height = h
   }
@@ -217,10 +218,18 @@ export default class Component extends SWebComponent {
    * Draw a frame
    */
   _drawFrame(frame) {
-    console.log('draw', frame)
-    const ctx = this._$canvas.getContext("2d")
-    ctx.clearRect(0, 0, this.offsetWidth, this.offsetHeight)
-    ctx.drawImage(this._$spriteImg, this.props.spriteWidth * (frame - 1), 0, this.props.spriteWidth, this._$spriteImg.height, 0, 0, this.offsetWidth, this.offsetHeight)
+    this._ctx.clearRect(0, 0, this.offsetWidth, this.offsetHeight)
+    this._ctx.drawImage(
+      this._$spriteImg,
+      this.props.spriteWidth * (frame - 1),
+      0,
+      this.props.spriteWidth,
+      this._$spriteImg.height,
+      0,
+      0,
+      this.offsetWidth,
+      this.offsetHeight
+    )
     if (this.props.color) this._colorize(this.props.color)
   }
 
@@ -229,11 +238,10 @@ export default class Component extends SWebComponent {
    * @param    {String}    color    The color to use
    */
   _colorize(color) {
-    const ctx = this._$canvas.getContext('2d')
-    ctx.globalCompositeOperation = "source-atop"
-    ctx.fillStyle   = color
-    ctx.fillRect(0, 0, this._$canvas.width, this._$canvas.height)
-    ctx.globalCompositeOperation = "source-over"
+    this._ctx.globalCompositeOperation = "source-atop"
+    this._ctx.fillStyle = color
+    this._ctx.fillRect(0, 0, this._$canvas.width, this._$canvas.height)
+    this._ctx.globalCompositeOperation = "source-over"
   }
 
   /**
@@ -241,13 +249,13 @@ export default class Component extends SWebComponent {
    * @return    {Promise}    A promised fulfilled when the transition is finished
    */
   animateIn() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this._setCanvasSize()
-      this.classList.add('active')
+      this.classList.add("active")
       this._endedPromiseResolve = resolve
-      this._phase = 'in'
+      this._phase = "in"
       this._currentFrame = 0
-      this._timer.tickCount(this.props.stillFrame || this._totalFrames)
+      this._timer.tickCount(this.props.stillFrame || this._totalFrames)
       this._timer.duration(this.props.duration)
       this._timer.reset()
       this._timer.start()
@@ -259,16 +267,18 @@ export default class Component extends SWebComponent {
    * @return    {Promise}    A promised fulfilled when the transition is finished
    */
   animateOut() {
-    return new Promise((resolve) => {
-      this._setCanvasSize()
+    return new Promise(resolve => {
       this._endedPromiseResolve = resolve
-      this._phase = 'out'
+      this._phase = "out"
       this._currentFrame = this.props.stillFrame || this._totalFrames
-      this._timer.tickCount((this.props.stillFrame) ? this._totalFrames - this.props.stillFrame : this._totalFrames)
+      this._timer.tickCount(
+        this.props.stillFrame
+          ? this._totalFrames - this.props.stillFrame
+          : this._totalFrames
+      )
       this._timer.duration(this.props.outDuration || this.props.duration)
       this._timer.reset()
       this._timer.start()
     })
   }
-
 }
