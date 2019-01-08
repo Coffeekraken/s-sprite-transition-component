@@ -133,9 +133,7 @@ function (_SWebComponent) {
 
                 this.dispatchComponentEvent('ready');
 
-                this._drawFrame(31);
-
-              case 17:
+              case 16:
               case "end":
                 return _context.stop();
             }

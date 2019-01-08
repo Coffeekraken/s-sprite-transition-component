@@ -13,7 +13,6 @@ document.querySelector('button').addEventListener('click', (e) => {
 })
 
 function playTransition() {
-  return
   $transition.animateIn().then(() => {
 
     setTimeout(() => {

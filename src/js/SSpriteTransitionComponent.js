@@ -164,8 +164,6 @@ export default class Component extends SWebComponent {
 
     // dispatch the ready event
     this.dispatchComponentEvent('ready')
-
-    this._drawFrame(31)
   }
 
   /**
