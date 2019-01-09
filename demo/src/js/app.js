@@ -14,7 +14,6 @@ document.querySelector('button').addEventListener('click', (e) => {
 
 function playTransition() {
   $transition.animateIn().then(() => {
-
     setTimeout(() => {
       $transition.animateOut().then(() => {
         console.log('Yop')

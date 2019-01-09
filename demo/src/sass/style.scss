@@ -8,7 +8,8 @@
 @include s-button-classes();
 
 body {
-	padding: s-space(bigger);
+  padding: s-space(bigger);
+  overflow: hidden;
 }
 
 s-sprite-transition {

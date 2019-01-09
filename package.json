@@ -1,12 +1,12 @@
 {
-  "name": "coffeekraken-s-component-name-component",
+  "name": "coffeekraken-s-sprite-transition-component",
   "version": "1.0.0",
-  "description": "component-description",
+  "description": "Create nice transitions using sprites",
   "main": "dist/index.js",
   "homepage": "http://coffeekraken.io",
   "repository": {
     "type": "git",
-    "url": "https://github.com/coffeekraken/s-{component-name}-component"
+    "url": "https://github.com/coffeekraken/s-sprite-transition-component"
   },
   "watch": {
     "doc:js": {
@@ -47,6 +47,8 @@
     "lint"
   ],
   "keywords": [
+    "transition",
+    "sprite",
     "webcomponent",
     "component",
     "html",
@@ -100,7 +102,7 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.0",
-    "coffeekraken-code-playground": "^1.0.0",
+    "coffeekraken-code-playground": "^1.0.18",
     "coffeekraken-docblock-to-markdown": "^1.0.0",
     "coffeekraken-s-typography-component": "^1.0.1",
     "coffeekraken-scripts-stack": "^1.0.1",

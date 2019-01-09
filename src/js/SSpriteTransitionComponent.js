@@ -18,11 +18,11 @@ export default class Component extends SWebComponent {
       src: null,
 
       /**
-       * The sprite frame width
+       * The frame width
        * @prop
        * @type    {Number}
        */
-      spriteWidth: null,
+      frameWidth: null,
 
       /**
        * Specify which is the still frame where the transition will stop before continue
@@ -62,21 +62,12 @@ export default class Component extends SWebComponent {
   }
 
   /**
-   * Physical props
-   * @definition    SWebComponent.physicalProps
-   * @protected
-   */
-  static get physicalProps() {
-    return []
-  }
-
-  /**
    * Required props
    * @definition    SWebComponent.requiredProps
    * @protected
    */
   static get requiredProps() {
-    return ["src", "spriteWidth"]
+    return ["src", "frameWidth"]
   }
 
   /**
@@ -129,14 +120,12 @@ export default class Component extends SWebComponent {
     // load the sprite as an image
     this._$spriteImg = await this._loadSprite()
 
-    // calculate the number of frames that has the sprite
-    this._totalFrames = this._$spriteImg.width / this.props.spriteWidth
+    // init some internal variables
     this._currentFrame = 0
 
     // init a timer to drive the animation
-    this._timer = new STimer(this.props.duration, {
-      tickCount: this.props.stillFrame || this._totalFrames
-    })
+    // the timer properties will be set at each animateIn and animateOut
+    this._timer = new STimer(this.props.duration, {})
     this._timer.onTick(() => {
       if (this.props.yoyo) {
         if (this._phase === "in") this._currentFrame += 1
@@ -144,8 +133,9 @@ export default class Component extends SWebComponent {
       } else {
         this._currentFrame += 1
       }
-
-      this._drawFrame(this._currentFrame)
+      if (this._currentFrame <= this.totalFrames && this._currentFrame > 0) {
+        this._drawFrame(this._currentFrame)
+      }
     })
     this._timer.onComplete(() => {
       if (this._phase === "out") {
@@ -181,8 +171,15 @@ export default class Component extends SWebComponent {
    * @definition    SWebComponent.componentWillReceiveProp
    * @protected
    */
-  componentWillReceiveProp(name, newVal, oldVal) {
+  async componentWillReceiveProp(name, newVal, oldVal) {
     super.componentWillReceiveProp(name, newVal, oldVal)
+    switch(name) {
+      case 'src':
+        // load the sprite as an image
+        this._$spriteImg = await this._loadSprite()
+      break
+      default:
+    }
   }
 
   /**
@@ -221,9 +218,9 @@ export default class Component extends SWebComponent {
     this._ctx.clearRect(0, 0, this.offsetWidth, this.offsetHeight)
     this._ctx.drawImage(
       this._$spriteImg,
-      this.props.spriteWidth * (frame - 1),
+      this.props.frameWidth * (frame - 1),
       0,
-      this.props.spriteWidth,
+      this.props.frameWidth,
       this._$spriteImg.height,
       0,
       0,
@@ -245,6 +242,41 @@ export default class Component extends SWebComponent {
   }
 
   /**
+   * Get the number of frame that the sprite has
+   * @return    {Integer}    The number of frame that the sprite has
+   */
+  get totalFrames() {
+    return this._$spriteImg.width / this.props.frameWidth
+  }
+
+  /**
+   * Go to the still frame or to the end of sprite if yoyo prop is true
+   */
+  goToStillFrame() {
+    const stillFrame = this.props.stillFrame || this.totalFrames
+    // go to the frame
+    this.goToFrame(stillFrame)
+  }
+
+  /**
+   * Go to a special frame
+   * @param    {Integer}    frame    The frame number to go to
+   */
+  goToFrame(frame) {
+    // draw the frame
+    this._drawFrame(frame)
+    // if the frame is 1 or totalFrmae in case of not yoyo animation
+    // we remove the active class
+    if (frame === 1 || (!this.props.yoyo && frame >= this.totalFrames)) {
+      // set the transition to inactive
+      this.classList.remove('active')
+    } else {
+      // set the transition to active
+      this.classList.add('active')
+    }
+  }
+
+  /**
    * Animate the transition in
    * @return    {Promise}    A promised fulfilled when the transition is finished
    */
@@ -255,7 +287,7 @@ export default class Component extends SWebComponent {
       this._endedPromiseResolve = resolve
       this._phase = "in"
       this._currentFrame = 0
-      this._timer.tickCount(this.props.stillFrame || this._totalFrames)
+      this._timer.tickCount(this.props.stillFrame || this.totalFrames)
       this._timer.duration(this.props.duration)
       this._timer.reset()
       this._timer.start()
@@ -270,11 +302,11 @@ export default class Component extends SWebComponent {
     return new Promise(resolve => {
       this._endedPromiseResolve = resolve
       this._phase = "out"
-      this._currentFrame = this.props.stillFrame || this._totalFrames
+      this._currentFrame = this.props.stillFrame || this.totalFrames
       this._timer.tickCount(
         this.props.stillFrame
-          ? this._totalFrames - this.props.stillFrame
-          : this._totalFrames
+          ? this.totalFrames - this.props.stillFrame
+          : this.totalFrames
       )
       this._timer.duration(this.props.outDuration || this.props.duration)
       this._timer.reset()

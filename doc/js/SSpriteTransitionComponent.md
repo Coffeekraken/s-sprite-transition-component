@@ -11,9 +11,9 @@ Type : **{ [String](https://developer.mozilla.org/fr/docs/Web/JavaScript/Referen
 Default : **null**
 
 
-## spriteWidth
+## frameWidth
 
-The sprite frame width
+The frame width
 
 Type : **{ [Number](https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Objets_globaux/Number) }**
 
@@ -74,6 +74,29 @@ Type : **{ [String](https://developer.mozilla.org/fr/docs/Web/JavaScript/Referen
 
 
 # Methods
+
+
+## totalFrames
+
+Get the number of frame that the sprite has
+
+Return **{ Integer }** The number of frame that the sprite has
+
+
+## goToStillFrame
+
+Go to the still frame or to the end of sprite if yoyo prop is true
+
+
+## goToFrame
+
+Go to a special frame
+
+
+### Parameters
+Name  |  Type  |  Description  |  Status  |  Default
+------------  |  ------------  |  ------------  |  ------------  |  ------------
+frame  |  **{ Integer }**  |  The frame number to go to  |  required  |
 
 
 ## animateIn

@@ -1,41 +1,43 @@
-# Coffeekraken s-{component-name}-component <img src=".resources/coffeekraken-logo.jpg" height="25px" />
+# Coffeekraken s-sprite-transition-component <img src=".resources/coffeekraken-logo.jpg" height="25px" />
 
 <p>
-	<!-- <a href="https://travis-ci.org/{repository-path}">
-		<img src="https://img.shields.io/travis/{repository-path}.svg?style=flat-square" />
+	<!-- <a href="https://travis-ci.org/coffeekraken/s-sprite-transition">
+		<img src="https://img.shields.io/travis/coffeekraken/s-sprite-transition.svg?style=flat-square" />
 	</a> -->
-	<a href="https://www.npmjs.com/package/{npm-package-name}">
-		<img src="https://img.shields.io/npm/v/{npm-package-name}.svg?style=flat-square" />
+	<a href="https://www.npmjs.com/package/coffeekraken-s-sprite-transition-component">
+		<img src="https://img.shields.io/npm/v/coffeekraken-s-sprite-transition-component.svg?style=flat-square" />
 	</a>
-	<a href="https://github.com/{repository-path}/blob/master/LICENSE.txt">
-		<img src="https://img.shields.io/npm/l/{npm-package-name}.svg?style=flat-square" />
+	<a href="https://github.com/coffeekraken/s-sprite-transition/blob/master/LICENSE.txt">
+		<img src="https://img.shields.io/npm/l/coffeekraken-s-sprite-transition-component.svg?style=flat-square" />
 	</a>
-	<!-- <a href="https://github.com/{repository-path}">
-		<img src="https://img.shields.io/npm/dt/{npm-package-name}.svg?style=flat-square" />
+	<!-- <a href="https://github.com/coffeekraken/s-sprite-transition">
+		<img src="https://img.shields.io/npm/dt/coffeekraken-s-sprite-transition-component.svg?style=flat-square" />
 	</a>
-	<a href="https://github.com/{repository-path}">
-		<img src="https://img.shields.io/github/forks/{repository-path}.svg?style=social&label=Fork&style=flat-square" />
+	<a href="https://github.com/coffeekraken/s-sprite-transition">
+		<img src="https://img.shields.io/github/forks/coffeekraken/s-sprite-transition.svg?style=social&label=Fork&style=flat-square" />
 	</a>
-	<a href="https://github.com/{repository-path}">
-		<img src="https://img.shields.io/github/stars/{repository-path}.svg?style=social&label=Star&style=flat-square" />
+	<a href="https://github.com/coffeekraken/s-sprite-transition">
+		<img src="https://img.shields.io/github/stars/coffeekraken/s-sprite-transition.svg?style=social&label=Star&style=flat-square" />
 	</a> -->
-	<a href="https://twitter.com/{twitter-username}">
-		<img src="https://img.shields.io/twitter/url/http/{twitter-username}.svg?style=social&style=flat-square" />
+	<a href="https://twitter.com/coffeekrakenio">
+		<img src="https://img.shields.io/twitter/url/http/coffeekrakenio.svg?style=social&style=flat-square" />
 	</a>
 	<a href="http://coffeekraken.io">
 		<img src="https://img.shields.io/twitter/url/http/shields.io.svg?style=flat-square&label=coffeekraken.io&colorB=f2bc2b&style=flat-square" />
 	</a>
 </p>
 
-<p class="lead">{component-description}</p>
+<p class="lead">Create nice transitions using sprites</p>
+
+[![View demo](http://components.coffeekraken.io/assets/img/view-demo.png)](http://components.coffeekraken.io/app/s-sprite-transition-component)
 
 ## Table of content
 
-1. **[Demo](http://components.coffeekraken.io/app/s-{component-name}-component)**
+1. **[Demo](http://components.coffeekraken.io/app/s-sprite-transition-component)**
 2. [Install](#readme-install)
 3. [Get Started](#readme-get-started)
 4. [Javascript API](doc/js)
-5. [SASS API](doc/sass)
+5. [Demos and downloads](#readme-demos-downloads)
 6. [Sugar Web Components Documentation](https://github.com/coffeekraken/sugar/blob/master/doc/webcomponent.md)
 7. [Browsers support](#readme-browsers-support)
 8. [Code linting](#readme-code-linting)
@@ -47,7 +49,7 @@
 ## Install
 
 ```
-npm install coffeekraken-s-{component-name}-component --save
+npm install coffeekraken-s-sprite-transition-component --save
 ```
 
 <a name="readme-get-started"></a>
@@ -56,14 +58,49 @@ npm install coffeekraken-s-{component-name}-component --save
 First, import the component into your javascript file like so:
 
 ```js
-import ComponentName from 'coffeekraken-s-{component-name}-component'
+import ComponentName from 'coffeekraken-s-sprite-transition-component'
 ```
 
 Then simply use it inside your html like so:
 
 ```html
-<s-{component-name}></s-{component-name}>
+<s-sprite-transition src="urban-full-480x270@60.png" frame-width="480" still-frame="30"></s-sprite-transition>
 ```
+
+and control your transition with javascript like so:
+
+```js
+const $transition = document.querySelector('s-sprite-transition')
+$transition.addEventListener('ready', async (e) => {
+  await $transition.animateIn()
+  await $transition.animateOut()
+})
+```
+
+<a id="readme-demos-downloads"></a>
+## Demos and downloads
+
+Here's some demos with each time the sprite to download
+
+### Urban transition
+
+[![View demo](http://components.coffeekraken.io/assets/img/view-demo.png)](http://components.coffeekraken.io/app/s-sprite-transition-component)
+
+[Source](https://tympanus.net/codrops/2016/09/29/transition-effect-with-css-masks/)
+[Download the sprite](/demo/data/urban-full-480x270@60.png)
+
+### Ink transition
+
+[![View demo](http://components.coffeekraken.io/assets/img/view-demo.png)](http://components.coffeekraken.io/app/s-sprite-transition-component?demo=ink)
+
+[Source](https://codyhouse.co/gem/ink-transition-effect)
+[Download the sprite](/demo/data/ink-640x360@26.png)
+
+### Draw transition
+
+[![View demo](http://components.coffeekraken.io/assets/img/view-demo.png)](http://components.coffeekraken.io/app/s-sprite-transition-component?demo=draw)
+
+[Download the sprite](/demo/data/draw-480x270@60.png)
 
 <a id="readme-browsers-support"></a>
 ## Browsers support
