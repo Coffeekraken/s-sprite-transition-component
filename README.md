@@ -38,12 +38,13 @@
 3. [Get Started](#readme-get-started)
 4. [Javascript API](doc/js)
 5. [Demos and downloads](#readme-demos-downloads)
-6. [Sugar Web Components Documentation](https://github.com/coffeekraken/sugar/blob/master/doc/webcomponent.md)
-7. [Browsers support](#readme-browsers-support)
-8. [Code linting](#readme-code-linting)
-9. [Contribute](#readme-contribute)
-10. [Who are Coffeekraken?](#readme-who-are-coffeekraken)
-11. [Licence](#readme-license)
+6. [Generate a sprite](#readme-generate-sprite)
+7. [Sugar Web Components Documentation](https://github.com/coffeekraken/sugar/blob/master/doc/webcomponent.md)
+8. [Browsers support](#readme-browsers-support)
+9. [Code linting](#readme-code-linting)
+10. [Contribute](#readme-contribute)
+11. [Who are Coffeekraken?](#readme-who-are-coffeekraken)
+12. [Licence](#readme-license)
 
 <a name="readme-install"></a>
 ## Install
@@ -101,6 +102,20 @@ Here's some demos with each time the sprite to download
 [![View demo](http://components.coffeekraken.io/assets/img/view-demo.png)](http://components.coffeekraken.io/app/s-sprite-transition-component?demo=draw)
 
 [Download the sprite](/demo/data/draw-480x270@60.png)
+
+<a id="readme-generate-sprite"></a>
+## Generate a sprite
+
+In order to generate a sprite, you'll need to:
+
+1. Create your transition
+2. Export it as a **png sequence**
+3. Go to [https://www.toptal.com/developers/css/sprite-generator/](https://www.toptal.com/developers/css/sprite-generator/)
+4. Upload your sequence. I found out that uploading more than 10 by 10 mess with the images order...
+5. Remove the padding in the option above the upload section
+6. Select **Left-right** in the "Align elements" option
+7. Click **Download**
+8. Enjoy your transition and share it with me it you want
 
 <a id="readme-browsers-support"></a>
 ## Browsers support
